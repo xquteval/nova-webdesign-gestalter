@@ -179,7 +179,7 @@ const Showcase = () => {
                   </div>
 
                   <div className="flex flex-col sm:flex-row gap-4">
-                    <Button className="gradient-nova text-white hover:scale-105 transition-all duration-300">
+                    <Button variant="nova">
                       Projekt ansehen
                       <ExternalLink className="ml-2 w-4 h-4" />
                     </Button>

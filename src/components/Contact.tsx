@@ -209,7 +209,8 @@ const Contact = () => {
                       <Button
                         type="submit"
                         size="lg"
-                        className="w-full gradient-nova text-white hover:scale-105 transition-all duration-300"
+                        variant="nova"
+                        className="w-full"
                       >
                         Kostenlose Beratung anfragen
                         <Send className="ml-2 w-5 h-5" />

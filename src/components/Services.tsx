@@ -179,7 +179,7 @@ const Services = () => {
                 Lassen Sie uns gemeinsam Ihre digitale Vision verwirklichen. 
                 Kontaktieren Sie uns für eine kostenlose Erstberatung.
               </p>
-              <Button size="lg" className="gradient-nova text-white hover:scale-105 transition-all duration-300">
+              <Button size="lg" variant="nova">
                 Kostenlose Beratung anfragen
                 <ArrowRight className="ml-2 w-5 h-5" />
               </Button>

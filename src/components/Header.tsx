@@ -63,7 +63,7 @@ const Header = () => {
 
           {/* CTA Button */}
           <div className="hidden md:block">
-            <Button className="gradient-nova text-white hover:shadow-lg transition-all duration-300 hover:scale-105">
+            <Button variant="nova">
               Kostenlose Beratung
             </Button>
           </div>
@@ -95,7 +95,7 @@ const Header = () => {
                   {item.name}
                 </a>
               ))}
-              <Button className="gradient-nova text-white mt-4 w-full">
+              <Button variant="nova" className="mt-4 w-full">
                 Kostenlose Beratung
               </Button>
             </nav>

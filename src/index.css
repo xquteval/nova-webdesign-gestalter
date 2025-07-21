@@ -159,6 +159,7 @@ All colors MUST be HSL.
   
   .gradient-nova {
     background: var(--gradient-nova);
+    box-shadow: var(--shadow-nova);
   }
   
   .gradient-hero {
