@@ -113,17 +113,17 @@ const Footer = () => {
               <h5 className="font-semibold text-sm mb-3">Rechtliches</h5>
               <ul className="space-y-2">
                 <li>
-                  <a href="#" className="text-neutral-400 hover:text-neutral-300 transition-colors text-xs">
+                  <a href="/impressum" className="text-neutral-400 hover:text-neutral-300 transition-colors text-xs">
                     Impressum
                   </a>
                 </li>
                 <li>
-                  <a href="#" className="text-neutral-400 hover:text-neutral-300 transition-colors text-xs">
+                  <a href="/datenschutz" className="text-neutral-400 hover:text-neutral-300 transition-colors text-xs">
                     Datenschutz
                   </a>
                 </li>
                 <li>
-                  <a href="#" className="text-neutral-400 hover:text-neutral-300 transition-colors text-xs">
+                  <a href="/agb" className="text-neutral-400 hover:text-neutral-300 transition-colors text-xs">
                     AGB
                   </a>
                 </li>
@@ -169,6 +169,10 @@ const Footer = () => {
               <Button 
                 size="sm" 
                 className="w-full bg-accent-nova hover:bg-accent-nova/90 text-white"
+                onClick={() => {
+                  const contactSection = document.getElementById('contact');
+                  contactSection?.scrollIntoView({ behavior: 'smooth' });
+                }}
               >
                 Jetzt kontaktieren
               </Button>

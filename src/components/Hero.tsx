@@ -60,6 +60,10 @@ const Hero = () => {
             <Button 
               size="lg" 
               className="bg-white text-primary hover:bg-white/90 hover:scale-105 transition-all duration-300 font-semibold px-8 py-4 text-lg"
+              onClick={() => {
+                const contactSection = document.getElementById('contact');
+                contactSection?.scrollIntoView({ behavior: 'smooth' });
+              }}
             >
               Projekt starten
               <ArrowRight className="ml-2 w-5 h-5" />
@@ -69,6 +73,10 @@ const Hero = () => {
               size="lg" 
               variant="outline"
               className="border-white/30 text-white hover:bg-white/10 hover:scale-105 transition-all duration-300 font-semibold px-8 py-4 text-lg backdrop-blur-sm"
+              onClick={() => {
+                const showcaseSection = document.getElementById('showcase');
+                showcaseSection?.scrollIntoView({ behavior: 'smooth' });
+              }}
             >
               Portfolio ansehen
             </Button>

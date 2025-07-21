@@ -63,7 +63,13 @@ const Header = () => {
 
           {/* CTA Button */}
           <div className="hidden md:block">
-            <Button variant="nova">
+            <Button 
+              variant="nova"
+              onClick={() => {
+                const contactSection = document.getElementById('contact');
+                contactSection?.scrollIntoView({ behavior: 'smooth' });
+              }}
+            >
               Kostenlose Beratung
             </Button>
           </div>
@@ -95,7 +101,15 @@ const Header = () => {
                   {item.name}
                 </a>
               ))}
-              <Button variant="nova" className="mt-4 w-full">
+              <Button 
+                variant="nova" 
+                className="mt-4 w-full"
+                onClick={() => {
+                  const contactSection = document.getElementById('contact');
+                  contactSection?.scrollIntoView({ behavior: 'smooth' });
+                  setIsMobileMenuOpen(false);
+                }}
+              >
                 Kostenlose Beratung
               </Button>
             </nav>

@@ -179,7 +179,14 @@ const Services = () => {
                 Lassen Sie uns gemeinsam Ihre digitale Vision verwirklichen. 
                 Kontaktieren Sie uns für eine kostenlose Erstberatung.
               </p>
-              <Button size="lg" variant="nova">
+              <Button 
+                size="lg" 
+                variant="nova"
+                onClick={() => {
+                  const contactSection = document.getElementById('contact');
+                  contactSection?.scrollIntoView({ behavior: 'smooth' });
+                }}
+              >
                 Kostenlose Beratung anfragen
                 <ArrowRight className="ml-2 w-5 h-5" />
               </Button>
