@@ -60,74 +60,244 @@ const SEOChecker = () => {
     setIsLoading(true);
     
     try {
-      // Simulate SEO check (in real implementation, you'd analyze the actual page)
-      await new Promise(resolve => setTimeout(resolve, 3000));
-      
       const cleanUrl = url.startsWith('http') ? url : `https://${url}`;
-      const score = Math.floor(Math.random() * 40) + 60; // Score between 60-100
       
-      const mockResult: SEOResult = {
-        url: cleanUrl,
-        score,
-        issues: [
-          {
-            type: 'success',
-            category: 'Meta Tags',
-            message: 'Title-Tag ist vorhanden und gut optimiert',
-            impact: 'high'
-          },
-          {
-            type: 'warning',
-            category: 'Meta Tags',
-            message: 'Meta Description ist zu kurz (120 Zeichen)',
-            impact: 'medium'
-          },
-          {
-            type: 'error',
-            category: 'Bilder',
-            message: '5 Bilder ohne Alt-Text gefunden',
-            impact: 'high'
-          },
-          {
-            type: 'success',
-            category: 'Performance',
-            message: 'Ladezeit unter 3 Sekunden',
-            impact: 'high'
-          },
-          {
-            type: 'warning',
-            category: 'Mobile',
-            message: 'Einige Elemente sind auf Mobilgeräten zu klein',
-            impact: 'medium'
-          },
-          {
-            type: 'success',
-            category: 'Sicherheit',
-            message: 'HTTPS ist aktiviert',
-            impact: 'high'
-          }
-        ],
-        metrics: {
-          loadTime: 2.3,
-          mobileResponsive: true,
-          httpsEnabled: true,
-          metaTitle: 'Beispiel Website - Ihre Lösung für...',
-          metaDescription: 'Kurze Beschreibung der Website...',
-          h1Count: 1,
-          imageCount: 12,
-          imagesWithoutAlt: 5,
-          internalLinks: 25,
-          externalLinks: 8
-        }
+      // Real SEO analysis
+      const startTime = Date.now();
+      
+      // Try to fetch the page using a CORS proxy
+      let htmlContent = '';
+      let fetchSuccessful = false;
+      
+      try {
+        const response = await fetch(`https://api.allorigins.win/get?url=${encodeURIComponent(cleanUrl)}`);
+        const data = await response.json();
+        htmlContent = data.contents;
+        fetchSuccessful = true;
+      } catch (error) {
+        console.log('CORS proxy failed, using fallback analysis');
+      }
+      
+      const loadTime = (Date.now() - startTime) / 1000;
+      
+      let issues = [];
+      let metrics = {
+        loadTime,
+        mobileResponsive: true,
+        httpsEnabled: cleanUrl.startsWith('https://'),
+        metaTitle: null as string | null,
+        metaDescription: null as string | null,
+        h1Count: 0,
+        imageCount: 0,
+        imagesWithoutAlt: 0,
+        internalLinks: 0,
+        externalLinks: 0
       };
       
-      setSeoResult(mockResult);
+      if (fetchSuccessful && htmlContent) {
+        // Parse HTML content
+        const parser = new DOMParser();
+        const doc = parser.parseFromString(htmlContent, 'text/html');
+        
+        // Check meta title
+        const titleElement = doc.querySelector('title');
+        metrics.metaTitle = titleElement ? titleElement.textContent : null;
+        
+        // Check meta description
+        const metaDesc = doc.querySelector('meta[name="description"]');
+        metrics.metaDescription = metaDesc ? metaDesc.getAttribute('content') : null;
+        
+        // Count H1 tags
+        metrics.h1Count = doc.querySelectorAll('h1').length;
+        
+        // Count images
+        const images = doc.querySelectorAll('img');
+        metrics.imageCount = images.length;
+        metrics.imagesWithoutAlt = Array.from(images).filter(img => !img.getAttribute('alt')).length;
+        
+        // Count links
+        const links = doc.querySelectorAll('a[href]');
+        links.forEach(link => {
+          const href = link.getAttribute('href');
+          if (href) {
+            if (href.startsWith('http') && !href.includes(new URL(cleanUrl).hostname)) {
+              metrics.externalLinks++;
+            } else if (!href.startsWith('http') || href.includes(new URL(cleanUrl).hostname)) {
+              metrics.internalLinks++;
+            }
+          }
+        });
+        
+        // Generate issues based on analysis
+        if (!metrics.metaTitle) {
+          issues.push({
+            type: 'error' as const,
+            category: 'Meta Tags',
+            message: 'Kein Title-Tag gefunden',
+            impact: 'high' as const
+          });
+        } else if (metrics.metaTitle.length > 60) {
+          issues.push({
+            type: 'warning' as const,
+            category: 'Meta Tags', 
+            message: `Title-Tag zu lang (${metrics.metaTitle.length} Zeichen)`,
+            impact: 'medium' as const
+          });
+        } else {
+          issues.push({
+            type: 'success' as const,
+            category: 'Meta Tags',
+            message: 'Title-Tag ist optimal',
+            impact: 'high' as const
+          });
+        }
+        
+        if (!metrics.metaDescription) {
+          issues.push({
+            type: 'error' as const,
+            category: 'Meta Tags',
+            message: 'Keine Meta Description gefunden',
+            impact: 'high' as const
+          });
+        } else if (metrics.metaDescription.length < 120) {
+          issues.push({
+            type: 'warning' as const,
+            category: 'Meta Tags',
+            message: `Meta Description zu kurz (${metrics.metaDescription.length} Zeichen)`,
+            impact: 'medium' as const
+          });
+        } else {
+          issues.push({
+            type: 'success' as const,
+            category: 'Meta Tags',
+            message: 'Meta Description ist gut',
+            impact: 'medium' as const
+          });
+        }
+        
+        if (metrics.h1Count === 0) {
+          issues.push({
+            type: 'error' as const,
+            category: 'Struktur',
+            message: 'Keine H1-Überschrift gefunden',
+            impact: 'high' as const
+          });
+        } else if (metrics.h1Count > 1) {
+          issues.push({
+            type: 'warning' as const,
+            category: 'Struktur',
+            message: `Mehrere H1-Tags gefunden (${metrics.h1Count})`,
+            impact: 'medium' as const
+          });
+        } else {
+          issues.push({
+            type: 'success' as const,
+            category: 'Struktur',
+            message: 'H1-Struktur ist korrekt',
+            impact: 'high' as const
+          });
+        }
+        
+        if (metrics.imagesWithoutAlt > 0) {
+          issues.push({
+            type: 'error' as const,
+            category: 'Bilder',
+            message: `${metrics.imagesWithoutAlt} Bilder ohne Alt-Text gefunden`,
+            impact: 'high' as const
+          });
+        } else if (metrics.imageCount > 0) {
+          issues.push({
+            type: 'success' as const,
+            category: 'Bilder',
+            message: 'Alle Bilder haben Alt-Text',
+            impact: 'medium' as const
+          });
+        }
+        
+        if (metrics.httpsEnabled) {
+          issues.push({
+            type: 'success' as const,
+            category: 'Sicherheit',
+            message: 'HTTPS ist aktiviert',
+            impact: 'high' as const
+          });
+        } else {
+          issues.push({
+            type: 'error' as const,
+            category: 'Sicherheit',
+            message: 'HTTPS ist nicht aktiviert',
+            impact: 'high' as const
+          });
+        }
+        
+        if (loadTime < 3) {
+          issues.push({
+            type: 'success' as const,
+            category: 'Performance',
+            message: `Gute Ladezeit (${loadTime.toFixed(1)}s)`,
+            impact: 'high' as const
+          });
+        } else {
+          issues.push({
+            type: 'warning' as const,
+            category: 'Performance',
+            message: `Ladezeit verbesserungswürdig (${loadTime.toFixed(1)}s)`,
+            impact: 'high' as const
+          });
+        }
+      } else {
+        // Fallback issues when content couldn't be fetched
+        issues = [
+          {
+            type: 'warning' as const,
+            category: 'Analyse',
+            message: 'Vollständige Analyse nicht möglich (CORS-Beschränkung)',
+            impact: 'low' as const
+          },
+          {
+            type: metrics.httpsEnabled ? 'success' : 'error' as const,
+            category: 'Sicherheit', 
+            message: metrics.httpsEnabled ? 'HTTPS ist aktiviert' : 'HTTPS ist nicht aktiviert',
+            impact: 'high' as const
+          },
+          {
+            type: loadTime < 3 ? 'success' : 'warning' as const,
+            category: 'Performance',
+            message: `Antwortzeit: ${loadTime.toFixed(1)}s`,
+            impact: 'medium' as const
+          }
+        ];
+      }
+      
+      // Calculate score
+      let score = 50; // Base score
+      issues.forEach(issue => {
+        if (issue.type === 'success') {
+          score += issue.impact === 'high' ? 15 : issue.impact === 'medium' ? 10 : 5;
+        } else if (issue.type === 'error') {
+          score -= issue.impact === 'high' ? 20 : issue.impact === 'medium' ? 15 : 10;
+        } else if (issue.type === 'warning') {
+          score -= issue.impact === 'high' ? 10 : issue.impact === 'medium' ? 7 : 5;
+        }
+      });
+      
+      score = Math.max(0, Math.min(100, score));
+      
+      const result: SEOResult = {
+        url: cleanUrl,
+        score,
+        issues,
+        metrics
+      };
+      
+      setSeoResult(result);
       
       toast({
         title: "SEO-Analyse abgeschlossen",
-        description: `Score: ${score}/100 - Mehrere Optimierungsmöglichkeiten gefunden`,
+        description: `Score: ${score}/100 - ${issues.filter(i => i.type === 'error' || i.type === 'warning').length} Probleme gefunden`,
       });
     } catch (error) {
+      console.error('SEO check error:', error);
       toast({
         title: "Fehler",
         description: "Website konnte nicht analysiert werden",
@@ -176,7 +346,7 @@ const SEOChecker = () => {
         </CardHeader>
         
         <CardContent className="space-y-6">
-          <form onSubmit={handleSubmit} className="flex gap-4">
+          <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row gap-4">
             <Input
               value={url}
               onChange={(e) => setUrl(e.target.value)}

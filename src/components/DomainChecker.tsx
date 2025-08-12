@@ -43,35 +43,68 @@ const DomainChecker = () => {
 
     setIsLoading(true);
     
+    const cleanDomain = domain.replace(/^https?:\/\//, '').replace(/^www\./, '');
+    
     try {
-      // Simulate domain check (in real implementation, you'd use a domain API)
-      await new Promise(resolve => setTimeout(resolve, 2000));
+      // Real domain check using WHOIS API
+      const response = await fetch(`https://api.whoisjson.com/v1/${cleanDomain}`, {
+        method: 'GET',
+        headers: {
+          'Accept': 'application/json',
+        }
+      });
       
-      const cleanDomain = domain.replace(/^https?:\/\//, '').replace(/^www\./, '');
-      const isAvailable = Math.random() > 0.7; // Simulate availability
+      if (!response.ok) {
+        throw new Error('Domain check failed');
+      }
       
-      const mockInfo: DomainInfo = {
+      const whoisData = await response.json();
+      
+      const domainInfo: DomainInfo = {
         domain: cleanDomain,
-        available: isAvailable,
-        registrar: isAvailable ? undefined : "GoDaddy Inc.",
-        createdDate: isAvailable ? undefined : "2020-03-15",
-        expiryDate: isAvailable ? undefined : "2025-03-15",
-        nameservers: isAvailable ? undefined : ["ns1.example.com", "ns2.example.com"],
-        status: isAvailable ? undefined : ["clientTransferProhibited", "clientUpdateProhibited"]
+        available: !whoisData.registered,
+        registrar: whoisData.registered ? whoisData.registrar : undefined,
+        createdDate: whoisData.registered ? whoisData.created_date?.split('T')[0] : undefined,
+        expiryDate: whoisData.registered ? whoisData.expiry_date?.split('T')[0] : undefined,
+        nameservers: whoisData.registered ? whoisData.nameservers : undefined,
+        status: whoisData.registered ? whoisData.status : undefined
       };
       
-      setDomainInfo(mockInfo);
+      setDomainInfo(domainInfo);
       
       toast({
         title: "Domain geprüft",
         description: `${cleanDomain} wurde erfolgreich analysiert`,
       });
     } catch (error) {
-      toast({
-        title: "Fehler",
-        description: "Domain konnte nicht geprüft werden",
-        variant: "destructive",
-      });
+      console.error('Domain check error:', error);
+      
+      // Fallback to DNS check
+      try {
+        const response = await fetch(`https://dns.google/resolve?name=${cleanDomain}&type=A`);
+        const dnsData = await response.json();
+        
+        const hasRecords = dnsData.Answer && dnsData.Answer.length > 0;
+        
+        const fallbackInfo: DomainInfo = {
+          domain: cleanDomain,
+          available: !hasRecords,
+          registrar: hasRecords ? "Unbekannt (DNS aktiv)" : undefined,
+        };
+        
+        setDomainInfo(fallbackInfo);
+        
+        toast({
+          title: "Domain geprüft",
+          description: `${cleanDomain} wurde analysiert (DNS-Check)`,
+        });
+      } catch (fallbackError) {
+        toast({
+          title: "Fehler",
+          description: "Domain konnte nicht geprüft werden. Bitte versuchen Sie es später erneut.",
+          variant: "destructive",
+        });
+      }
     } finally {
       setIsLoading(false);
     }
@@ -100,7 +133,7 @@ const DomainChecker = () => {
         </CardHeader>
         
         <CardContent className="space-y-6">
-          <form onSubmit={handleSubmit} className="flex gap-4">
+          <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row gap-4">
             <Input
               value={domain}
               onChange={(e) => setDomain(e.target.value)}
