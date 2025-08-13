@@ -3,9 +3,6 @@ import {
   MapPin, 
   Phone, 
   Mail, 
-  Instagram, 
-  Linkedin, 
-  Facebook,
   ArrowUp
 } from "lucide-react";
 
@@ -25,7 +22,7 @@ const Footer = () => {
   const quickLinks = [
     { name: "Über uns", href: "#about" },
     { name: "Leistungen", href: "#services" },
-    { name: "Projekte", href: "#showcase" },
+    
     
     { name: "Kontakt", href: "#contact" }
   ];
@@ -132,27 +129,12 @@ const Footer = () => {
             
             <div className="mb-6">
               <p className="text-neutral-300 text-sm mb-4">
-                Folgen Sie uns für Updates und Inspiration:
+                Wir sind Ihr lokaler Partner in Wiesbaden:
               </p>
-              <div className="flex space-x-4">
-                <a
-                  href="https://instagram.com/novawebdesign"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="w-10 h-10 rounded-lg bg-white/10 flex items-center justify-center hover:bg-accent-nova transition-all duration-300 hover:scale-110"
-                  aria-label="Instagram"
-                >
-                  <Instagram className="w-5 h-5" />
-                </a>
-                <a
-                  href="https://linkedin.com/company/novawebdesign"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="w-10 h-10 rounded-lg bg-white/10 flex items-center justify-center hover:bg-accent-nova transition-all duration-300 hover:scale-110"
-                  aria-label="LinkedIn"
-                >
-                  <Linkedin className="w-5 h-5" />
-                </a>
+              <div className="text-center">
+                <div className="inline-block p-3 rounded-lg bg-white/10">
+                  <p className="text-accent-nova font-semibold">📧 Kontakt bevorzugt per E-Mail</p>
+                </div>
               </div>
             </div>
 

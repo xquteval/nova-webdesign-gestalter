@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Sparkles, Monitor, Smartphone } from "lucide-react";
+import StarField from "./StarField";
+import FloatingElements from "./FloatingElements";
 
 const Hero = () => {
   const [isVisible, setIsVisible] = useState(false);
@@ -11,17 +13,14 @@ const Hero = () => {
 
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
-      {/* Animated Background */}
-      <div className="absolute inset-0 gradient-hero">
-        <div className="absolute inset-0 bg-black/20"></div>
-        
-        {/* Floating Elements */}
-        <div className="absolute top-20 left-10 w-20 h-20 rounded-full bg-white/10 animate-pulse"></div>
-        <div className="absolute top-40 right-20 w-32 h-32 rounded-full bg-white/5 animate-bounce"></div>
-        <div className="absolute bottom-20 left-20 w-16 h-16 rounded-full bg-accent-nova/30 animate-pulse"></div>
-      </div>
+      {/* Animated Star Field Background */}
+      <StarField />
+      <FloatingElements />
+      
+      {/* Overlay for content readability */}
+      <div className="absolute inset-0 bg-black/30 z-10"></div>
 
-      <div className="container mx-auto px-6 relative z-10">
+      <div className="container mx-auto px-6 relative z-20">
         <div className="max-w-4xl mx-auto text-center">
           {/* Main Headline */}
           <div
@@ -74,11 +73,11 @@ const Hero = () => {
               variant="outline"
               className="border-white/30 text-white hover:bg-white/10 hover:scale-105 transition-all duration-300 font-semibold px-8 py-4 text-lg backdrop-blur-sm"
               onClick={() => {
-                const showcaseSection = document.getElementById('showcase');
-                showcaseSection?.scrollIntoView({ behavior: 'smooth' });
+                const toolsSection = document.getElementById('tools');
+                toolsSection?.scrollIntoView({ behavior: 'smooth' });
               }}
             >
-              Portfolio ansehen
+              Tools ansehen
             </Button>
           </div>
 

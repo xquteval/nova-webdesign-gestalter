@@ -61,29 +61,39 @@ const SEOChecker = () => {
     
     try {
       const cleanUrl = url.startsWith('http') ? url : `https://${url}`;
-      
-      // Real SEO analysis
       const startTime = Date.now();
       
-      // Try to fetch the page using a CORS proxy
+      let issues = [];
       let htmlContent = '';
       let fetchSuccessful = false;
       
+      // Try multiple approaches to fetch content
       try {
+        // Primary API - AllOrigins
         const response = await fetch(`https://api.allorigins.win/get?url=${encodeURIComponent(cleanUrl)}`);
         const data = await response.json();
-        htmlContent = data.contents;
-        fetchSuccessful = true;
+        if (data.contents) {
+          htmlContent = data.contents;
+          fetchSuccessful = true;
+        }
       } catch (error) {
-        console.log('CORS proxy failed, using fallback analysis');
+        try {
+          // Backup API - cors-anywhere alternative
+          const proxyResponse = await fetch(`https://thingproxy.freeboard.io/fetch/${cleanUrl}`);
+          if (proxyResponse.ok) {
+            htmlContent = await proxyResponse.text();
+            fetchSuccessful = true;
+          }
+        } catch (backupError) {
+          console.log('All CORS proxies failed, performing basic analysis');
+        }
       }
       
       const loadTime = (Date.now() - startTime) / 1000;
       
-      let issues = [];
       let metrics = {
         loadTime,
-        mobileResponsive: true,
+        mobileResponsive: true, // Assume responsive unless proven otherwise
         httpsEnabled: cleanUrl.startsWith('https://'),
         metaTitle: null as string | null,
         metaDescription: null as string | null,
@@ -93,195 +103,315 @@ const SEOChecker = () => {
         internalLinks: 0,
         externalLinks: 0
       };
-      
+
       if (fetchSuccessful && htmlContent) {
-        // Parse HTML content
+        // Parse HTML content for detailed analysis
         const parser = new DOMParser();
         const doc = parser.parseFromString(htmlContent, 'text/html');
         
-        // Check meta title
+        // Extract and analyze meta title
         const titleElement = doc.querySelector('title');
-        metrics.metaTitle = titleElement ? titleElement.textContent : null;
+        metrics.metaTitle = titleElement ? titleElement.textContent?.trim() || null : null;
         
-        // Check meta description
-        const metaDesc = doc.querySelector('meta[name="description"]');
-        metrics.metaDescription = metaDesc ? metaDesc.getAttribute('content') : null;
+        // Extract meta description
+        const metaDesc = doc.querySelector('meta[name="description"], meta[property="og:description"]');
+        metrics.metaDescription = metaDesc ? metaDesc.getAttribute('content')?.trim() || null : null;
         
         // Count H1 tags
-        metrics.h1Count = doc.querySelectorAll('h1').length;
+        const h1Elements = doc.querySelectorAll('h1');
+        metrics.h1Count = h1Elements.length;
         
-        // Count images
+        // Analyze images
         const images = doc.querySelectorAll('img');
         metrics.imageCount = images.length;
-        metrics.imagesWithoutAlt = Array.from(images).filter(img => !img.getAttribute('alt')).length;
+        metrics.imagesWithoutAlt = Array.from(images).filter(img => 
+          !img.getAttribute('alt') || img.getAttribute('alt')?.trim() === ''
+        ).length;
         
-        // Count links
+        // Analyze links
         const links = doc.querySelectorAll('a[href]');
+        const urlHostname = new URL(cleanUrl).hostname;
+        
         links.forEach(link => {
           const href = link.getAttribute('href');
           if (href) {
-            if (href.startsWith('http') && !href.includes(new URL(cleanUrl).hostname)) {
-              metrics.externalLinks++;
-            } else if (!href.startsWith('http') || href.includes(new URL(cleanUrl).hostname)) {
-              metrics.internalLinks++;
+            try {
+              if (href.startsWith('http')) {
+                const linkUrl = new URL(href);
+                if (linkUrl.hostname === urlHostname) {
+                  metrics.internalLinks++;
+                } else {
+                  metrics.externalLinks++;
+                }
+              } else if (href.startsWith('/') || !href.includes('://')) {
+                metrics.internalLinks++;
+              }
+            } catch (e) {
+              // Invalid URL, skip
             }
           }
         });
+
+        // Check for mobile viewport meta tag
+        const viewportMeta = doc.querySelector('meta[name="viewport"]');
+        metrics.mobileResponsive = !!viewportMeta;
         
-        // Generate issues based on analysis
+        // Advanced SEO checks
+        const structuredData = doc.querySelectorAll('script[type="application/ld+json"]');
+        const openGraph = doc.querySelectorAll('meta[property^="og:"]');
+        const twitterCard = doc.querySelectorAll('meta[name^="twitter:"]');
+        const canonicalLink = doc.querySelector('link[rel="canonical"]');
+        
+        // Title Tag Analysis
         if (!metrics.metaTitle) {
           issues.push({
             type: 'error' as const,
-            category: 'Meta Tags',
-            message: 'Kein Title-Tag gefunden',
+            category: 'SEO Grundlagen',
+            message: 'Kein Title-Tag gefunden - kritisch für SEO!',
             impact: 'high' as const
-          });
-        } else if (metrics.metaTitle.length > 60) {
-          issues.push({
-            type: 'warning' as const,
-            category: 'Meta Tags', 
-            message: `Title-Tag zu lang (${metrics.metaTitle.length} Zeichen)`,
-            impact: 'medium' as const
           });
         } else {
-          issues.push({
-            type: 'success' as const,
-            category: 'Meta Tags',
-            message: 'Title-Tag ist optimal',
-            impact: 'high' as const
-          });
+          const titleLength = metrics.metaTitle.length;
+          if (titleLength < 30) {
+            issues.push({
+              type: 'warning' as const,
+              category: 'Title-Tag',
+              message: `Title zu kurz (${titleLength} Zeichen) - optimal sind 50-60`,
+              impact: 'medium' as const
+            });
+          } else if (titleLength > 60) {
+            issues.push({
+              type: 'warning' as const,
+              category: 'Title-Tag',
+              message: `Title zu lang (${titleLength} Zeichen) - wird abgeschnitten`,
+              impact: 'medium' as const
+            });
+          } else {
+            issues.push({
+              type: 'success' as const,
+              category: 'Title-Tag',
+              message: `Title-Länge optimal (${titleLength} Zeichen)`,
+              impact: 'high' as const
+            });
+          }
         }
         
+        // Meta Description Analysis  
         if (!metrics.metaDescription) {
           issues.push({
             type: 'error' as const,
-            category: 'Meta Tags',
+            category: 'SEO Grundlagen',
             message: 'Keine Meta Description gefunden',
             impact: 'high' as const
           });
-        } else if (metrics.metaDescription.length < 120) {
-          issues.push({
-            type: 'warning' as const,
-            category: 'Meta Tags',
-            message: `Meta Description zu kurz (${metrics.metaDescription.length} Zeichen)`,
-            impact: 'medium' as const
-          });
         } else {
-          issues.push({
-            type: 'success' as const,
-            category: 'Meta Tags',
-            message: 'Meta Description ist gut',
-            impact: 'medium' as const
-          });
+          const descLength = metrics.metaDescription.length;
+          if (descLength < 120) {
+            issues.push({
+              type: 'warning' as const,
+              category: 'Meta Description',
+              message: `Beschreibung zu kurz (${descLength} Zeichen) - optimal sind 150-160`,
+              impact: 'medium' as const
+            });
+          } else if (descLength > 160) {
+            issues.push({
+              type: 'warning' as const,
+              category: 'Meta Description',
+              message: `Beschreibung zu lang (${descLength} Zeichen) - wird abgeschnitten`,
+              impact: 'medium' as const
+            });
+          } else {
+            issues.push({
+              type: 'success' as const,
+              category: 'Meta Description',
+              message: `Meta Description optimal (${descLength} Zeichen)`,
+              impact: 'high' as const
+            });
+          }
         }
         
+        // H1 Structure Analysis
         if (metrics.h1Count === 0) {
           issues.push({
             type: 'error' as const,
-            category: 'Struktur',
-            message: 'Keine H1-Überschrift gefunden',
+            category: 'Content-Struktur',
+            message: 'Keine H1-Überschrift gefunden - wichtig für SEO',
             impact: 'high' as const
           });
         } else if (metrics.h1Count > 1) {
           issues.push({
             type: 'warning' as const,
-            category: 'Struktur',
-            message: `Mehrere H1-Tags gefunden (${metrics.h1Count})`,
+            category: 'Content-Struktur',
+            message: `${metrics.h1Count} H1-Tags gefunden - nur eine empfohlen`,
             impact: 'medium' as const
           });
         } else {
           issues.push({
             type: 'success' as const,
-            category: 'Struktur',
-            message: 'H1-Struktur ist korrekt',
+            category: 'Content-Struktur',
+            message: 'H1-Struktur korrekt (genau eine H1)',
             impact: 'high' as const
           });
         }
         
+        // Image SEO Analysis
         if (metrics.imagesWithoutAlt > 0) {
           issues.push({
             type: 'error' as const,
-            category: 'Bilder',
-            message: `${metrics.imagesWithoutAlt} Bilder ohne Alt-Text gefunden`,
+            category: 'Bilder-SEO',
+            message: `${metrics.imagesWithoutAlt} von ${metrics.imageCount} Bildern ohne Alt-Text`,
             impact: 'high' as const
           });
         } else if (metrics.imageCount > 0) {
           issues.push({
             type: 'success' as const,
-            category: 'Bilder',
-            message: 'Alle Bilder haben Alt-Text',
+            category: 'Bilder-SEO',
+            message: `Alle ${metrics.imageCount} Bilder haben Alt-Text`,
             impact: 'medium' as const
           });
         }
         
+        // Mobile Optimization
+        if (!metrics.mobileResponsive) {
+          issues.push({
+            type: 'error' as const,
+            category: 'Mobile SEO',
+            message: 'Keine Viewport Meta-Tag gefunden - nicht mobiloptimiert',
+            impact: 'high' as const
+          });
+        } else {
+          issues.push({
+            type: 'success' as const,
+            category: 'Mobile SEO',
+            message: 'Viewport Meta-Tag vorhanden - mobiloptimiert',
+            impact: 'high' as const
+          });
+        }
+        
+        // HTTPS Check
         if (metrics.httpsEnabled) {
           issues.push({
             type: 'success' as const,
-            category: 'Sicherheit',
-            message: 'HTTPS ist aktiviert',
+            category: 'Technische SEO',
+            message: 'HTTPS aktiviert - sicher und SEO-freundlich',
             impact: 'high' as const
           });
         } else {
           issues.push({
             type: 'error' as const,
-            category: 'Sicherheit',
-            message: 'HTTPS ist nicht aktiviert',
+            category: 'Technische SEO',
+            message: 'HTTPS nicht aktiviert - Sicherheitsrisiko und SEO-Nachteil',
             impact: 'high' as const
           });
         }
         
-        if (loadTime < 3) {
+        // Performance Analysis
+        if (loadTime < 2) {
           issues.push({
             type: 'success' as const,
             category: 'Performance',
-            message: `Gute Ladezeit (${loadTime.toFixed(1)}s)`,
+            message: `Ausgezeichnete Ladezeit (${loadTime.toFixed(1)}s)`,
             impact: 'high' as const
+          });
+        } else if (loadTime < 4) {
+          issues.push({
+            type: 'warning' as const,
+            category: 'Performance',
+            message: `Akzeptable Ladezeit (${loadTime.toFixed(1)}s) - unter 3s wäre besser`,
+            impact: 'medium' as const
+          });
+        } else {
+          issues.push({
+            type: 'error' as const,
+            category: 'Performance',
+            message: `Langsame Ladezeit (${loadTime.toFixed(1)}s) - kritisch für SEO`,
+            impact: 'high' as const
+          });
+        }
+        
+        // Advanced SEO Features
+        if (structuredData.length > 0) {
+          issues.push({
+            type: 'success' as const,
+            category: 'Erweiterte SEO',
+            message: `${structuredData.length} strukturierte Daten gefunden (Schema.org)`,
+            impact: 'medium' as const
           });
         } else {
           issues.push({
             type: 'warning' as const,
-            category: 'Performance',
-            message: `Ladezeit verbesserungswürdig (${loadTime.toFixed(1)}s)`,
-            impact: 'high' as const
+            category: 'Erweiterte SEO',
+            message: 'Keine strukturierten Daten gefunden - verpasste Chance',
+            impact: 'low' as const
           });
         }
+        
+        if (openGraph.length > 0) {
+          issues.push({
+            type: 'success' as const,
+            category: 'Social Media SEO',
+            message: `${openGraph.length} Open Graph Tags gefunden`,
+            impact: 'medium' as const
+          });
+        } else {
+          issues.push({
+            type: 'warning' as const,
+            category: 'Social Media SEO',
+            message: 'Keine Open Graph Tags - schlecht für Social Media',
+            impact: 'medium' as const
+          });
+        }
+        
+        if (!canonicalLink) {
+          issues.push({
+            type: 'warning' as const,
+            category: 'Technische SEO',
+            message: 'Kein Canonical-Link gefunden - Duplicate Content Risiko',
+            impact: 'medium' as const
+          });
+        }
+        
       } else {
-        // Fallback issues when content couldn't be fetched
+        // Fallback for when content couldn't be fetched
         issues = [
           {
             type: 'warning' as const,
-            category: 'Analyse',
+            category: 'Analyse-Limitation',
             message: 'Vollständige Analyse nicht möglich (CORS-Beschränkung)',
             impact: 'low' as const
           },
           {
             type: metrics.httpsEnabled ? 'success' : 'error' as const,
-            category: 'Sicherheit', 
-            message: metrics.httpsEnabled ? 'HTTPS ist aktiviert' : 'HTTPS ist nicht aktiviert',
+            category: 'Basis-Check',
+            message: metrics.httpsEnabled ? 'HTTPS aktiviert' : 'HTTPS nicht aktiviert',
             impact: 'high' as const
           },
           {
             type: loadTime < 3 ? 'success' : 'warning' as const,
             category: 'Performance',
-            message: `Antwortzeit: ${loadTime.toFixed(1)}s`,
+            message: `Server-Antwortzeit: ${loadTime.toFixed(1)}s`,
             impact: 'medium' as const
           }
         ];
       }
       
-      // Calculate score
+      // Calculate comprehensive SEO score
       let score = 50; // Base score
+      
       issues.forEach(issue => {
+        const multiplier = issue.impact === 'high' ? 1.5 : issue.impact === 'medium' ? 1 : 0.5;
+        
         if (issue.type === 'success') {
-          score += issue.impact === 'high' ? 15 : issue.impact === 'medium' ? 10 : 5;
+          score += (issue.impact === 'high' ? 12 : issue.impact === 'medium' ? 8 : 4) * multiplier;
         } else if (issue.type === 'error') {
-          score -= issue.impact === 'high' ? 20 : issue.impact === 'medium' ? 15 : 10;
+          score -= (issue.impact === 'high' ? 15 : issue.impact === 'medium' ? 10 : 6) * multiplier;
         } else if (issue.type === 'warning') {
-          score -= issue.impact === 'high' ? 10 : issue.impact === 'medium' ? 7 : 5;
+          score -= (issue.impact === 'high' ? 8 : issue.impact === 'medium' ? 5 : 3) * multiplier;
         }
       });
       
-      score = Math.max(0, Math.min(100, score));
+      // Ensure score is between 0 and 100
+      score = Math.max(0, Math.min(100, Math.round(score)));
       
       const result: SEOResult = {
         url: cleanUrl,
@@ -292,15 +422,19 @@ const SEOChecker = () => {
       
       setSeoResult(result);
       
+      const errorCount = issues.filter(i => i.type === 'error').length;
+      const warningCount = issues.filter(i => i.type === 'warning').length;
+      
       toast({
-        title: "SEO-Analyse abgeschlossen",
-        description: `Score: ${score}/100 - ${issues.filter(i => i.type === 'error' || i.type === 'warning').length} Probleme gefunden`,
+        title: "SEO-Analyse erfolgreich abgeschlossen",
+        description: `Score: ${score}/100 - ${errorCount} Fehler, ${warningCount} Warnungen gefunden`,
       });
+      
     } catch (error) {
-      console.error('SEO check error:', error);
+      console.error('SEO analysis error:', error);
       toast({
-        title: "Fehler",
-        description: "Website konnte nicht analysiert werden",
+        title: "Analyse-Fehler",
+        description: "Website konnte nicht vollständig analysiert werden. Überprüfen Sie die URL.",
         variant: "destructive",
       });
     } finally {

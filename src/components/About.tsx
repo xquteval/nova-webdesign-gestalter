@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { Award, Users, Clock, Target } from "lucide-react";
+import ParticleBackground from "./ParticleBackground";
 
 const About = () => {
   const [isVisible, setIsVisible] = useState(false);
@@ -35,6 +36,9 @@ const About = () => {
       id="about"
       className="py-20 bg-gradient-subtle relative overflow-hidden"
     >
+      {/* Particle Background */}
+      <ParticleBackground />
+      
       {/* Background Elements */}
       <div className="absolute top-0 right-0 w-1/3 h-full bg-accent-nova/5 rounded-l-full"></div>
       <div className="absolute bottom-0 left-0 w-1/4 h-1/2 bg-primary/5 rounded-tr-full"></div>
