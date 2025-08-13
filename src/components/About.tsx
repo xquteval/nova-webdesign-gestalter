@@ -23,10 +23,10 @@ const About = () => {
   }, []);
 
   const stats = [
-    { icon: Users, value: "50+", label: "Zufriedene Kunden" },
-    { icon: Award, value: "3+", label: "Jahre Erfahrung" },
-    { icon: Clock, value: "48h", label: "Durchschnittliche Reaktionszeit" },
-    { icon: Target, value: "100%", label: "Kundenzufriedenheit" },
+    { icon: Users, value: "15+", label: "Aktuelle Projekte" },
+    { icon: Award, value: "99%", label: "Uptime garantiert" },
+    { icon: Clock, value: "24h", label: "Support-Reaktionszeit" },
+    { icon: Target, value: "SSL", label: "Sicherheit inklusive" },
   ];
 
   return (
@@ -57,9 +57,9 @@ const About = () => {
               <span className="text-gradient block">Wiesbaden</span>
             </h2>
             <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-              Wir sind Ihr lokaler Partner für professionelle Webentwicklung. 
-              Mit Leidenschaft und Expertise schaffen wir digitale Erlebnisse, 
-              die Ihre Kunden begeistern und Ihr Geschäft voranbringen.
+              Wir sind Ihr lokaler Partner für Website-Erstellung und zuverlässiges Hosting. 
+              Mit Leidenschaft und Expertise bringen wir Ihr Unternehmen 
+              erfolgreich ins Internet - alles aus einer Hand.
             </p>
           </div>
 
@@ -86,8 +86,8 @@ const About = () => {
                       Maßgeschneiderte Lösungen
                     </h4>
                     <p className="text-muted-foreground">
-                      Jede Website wird individuell nach Ihren Bedürfnissen und 
-                      Zielen entwickelt - keine Templates, sondern echte Handarbeit.
+                      Jede Website wird individuell nach Ihren Bedürfnissen entwickelt 
+                      und auf unserem zuverlässigen Hosting-System betrieben.
                     </p>
                   </div>
                 </div>
@@ -98,11 +98,11 @@ const About = () => {
                   </div>
                   <div>
                     <h4 className="font-semibold text-lg text-foreground mb-2">
-                      Lokale Betreuung
+                      Hosting inklusive
                     </h4>
                     <p className="text-muted-foreground">
-                      Als Wiesbadener Unternehmen kennen wir die Region und 
-                      unterstützen lokale Betriebe mit persönlicher Beratung.
+                      Ihre Website läuft auf unserem schnellen und sicheren 
+                      Hosting - mit SSL-Zertifikat und regelmäßigen Backups.
                     </p>
                   </div>
                 </div>
@@ -113,11 +113,11 @@ const About = () => {
                   </div>
                   <div>
                     <h4 className="font-semibold text-lg text-foreground mb-2">
-                      Moderne Technologien
+                      Alles aus einer Hand
                     </h4>
                     <p className="text-muted-foreground">
-                      Wir setzen auf bewährte und zukunftssichere Technologien 
-                      für beste Performance und Sicherheit.
+                      Von der Website-Erstellung bis zum Hosting und Support - 
+                      Sie haben nur einen Ansprechpartner für alles.
                     </p>
                   </div>
                 </div>
@@ -153,9 +153,9 @@ const About = () => {
 
               <div className="mt-8 p-6 rounded-2xl bg-white/50 backdrop-blur-sm border border-white/20">
                 <blockquote className="text-lg text-foreground italic text-center">
-                  "Bei Nova WebDesign steht der Kunde im Mittelpunkt. 
-                  Wir entwickeln nicht nur Websites, sondern digitale 
-                  Erlebnisse, die Erfolg bringen."
+                  "Wir erstellen nicht nur Websites, sondern bieten 
+                  das komplette Paket: Design, Entwicklung und 
+                  zuverlässiges Hosting - alles aus einer Hand."
                 </blockquote>
                 <cite className="block text-center mt-4 text-accent-nova font-semibold">
                   — Das Nova Team

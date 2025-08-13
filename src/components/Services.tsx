@@ -43,38 +43,17 @@ const Services = () => {
     },
     {
       icon: Code,
-      title: "Webentwicklung",
+      title: "Webentwicklung", 
       description: "Technische Umsetzung mit modernsten Technologien und Standards",
       features: ["React/Vue.js", "Performance", "Sicherheit"],
       color: "primary"
     },
     {
-      icon: Search,
-      title: "SEO Optimierung",
-      description: "Bessere Sichtbarkeit in Google für mehr qualifizierte Leads",
-      features: ["Local SEO", "Keyword Research", "Content Marketing"],
-      color: "accent-nova"
-    },
-    {
-      icon: Smartphone,
-      title: "Mobile Apps",
-      description: "Native und Progressive Web Apps für alle Plattformen",
-      features: ["iOS & Android", "PWA", "App Store Veröffentlichung"],
-      color: "primary"
-    },
-    {
-      icon: ShoppingCart,
-      title: "E-Commerce",
-      description: "Professionelle Online-Shops mit allen wichtigen Features",
-      features: ["WooCommerce", "Payment Integration", "Inventory Management"],
-      color: "accent-nova"
-    },
-    {
       icon: BarChart3,
-      title: "Analytics & Wartung",
-      description: "Kontinuierliche Optimierung und technische Betreuung",
-      features: ["Google Analytics", "Updates", "Support"],
-      color: "primary"
+      title: "Web-Hosting",
+      description: "Zuverlässiges und schnelles Hosting für Ihre Website",
+      features: ["99.9% Uptime", "SSL Zertifikate", "Backup Service"],
+      color: "accent-nova"
     }
   ];
 
@@ -109,12 +88,12 @@ const Services = () => {
               Unsere Leistungen
             </span>
             <h2 className="font-heading font-bold text-4xl md:text-5xl text-foreground mb-6">
-              Vollumfängliche 
-              <span className="text-gradient block">Digitalservices</span>
+              Website-Erstellung
+              <span className="text-gradient block">& Hosting</span>
             </h2>
             <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-              Von der ersten Idee bis zur erfolgreichen Website - 
-              wir begleiten Sie durch den gesamten Entwicklungsprozess.
+              Professionelle Websites von der Konzeption bis zum Live-Gang -
+              inklusive zuverlässigem Hosting und Support.
             </p>
           </div>
 

@@ -18,18 +18,15 @@ const Footer = () => {
 
   const services = [
     "Webdesign",
-    "Webentwicklung",
-    "SEO Optimierung",
-    "E-Commerce",
-    "Mobile Apps",
-    "Wartung & Support"
+    "Webentwicklung", 
+    "Web-Hosting"
   ];
 
   const quickLinks = [
     { name: "Über uns", href: "#about" },
     { name: "Leistungen", href: "#services" },
     { name: "Projekte", href: "#showcase" },
-    { name: "Referenzen", href: "#testimonials" },
+    
     { name: "Kontakt", href: "#contact" }
   ];
 
@@ -45,10 +42,8 @@ const Footer = () => {
         <div className="grid lg:grid-cols-4 gap-12 py-16">
           {/* Company Info */}
           <div className="lg:col-span-1">
-            <div className="flex items-center space-x-2 mb-6">
-              <div className="w-12 h-12 rounded-lg gradient-nova flex items-center justify-center">
-                <span className="text-white font-bold text-xl">N</span>
-              </div>
+            <div className="flex items-center space-x-3 mb-6">
+              <img src="/src/assets/nova-logo.png" alt="Nova WebDesign Logo" className="w-12 h-12 rounded-lg" />
               <div>
                 <h3 className="font-heading font-bold text-xl">Nova WebDesign</h3>
                 <p className="text-neutral-400 text-sm">Wiesbaden</p>
@@ -141,22 +136,22 @@ const Footer = () => {
               </p>
               <div className="flex space-x-4">
                 <a
-                  href="#"
+                  href="https://instagram.com/novawebdesign"
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="w-10 h-10 rounded-lg bg-white/10 flex items-center justify-center hover:bg-accent-nova transition-all duration-300 hover:scale-110"
+                  aria-label="Instagram"
                 >
                   <Instagram className="w-5 h-5" />
                 </a>
                 <a
-                  href="#"
+                  href="https://linkedin.com/company/novawebdesign"
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="w-10 h-10 rounded-lg bg-white/10 flex items-center justify-center hover:bg-accent-nova transition-all duration-300 hover:scale-110"
+                  aria-label="LinkedIn"
                 >
                   <Linkedin className="w-5 h-5" />
-                </a>
-                <a
-                  href="#"
-                  className="w-10 h-10 rounded-lg bg-white/10 flex items-center justify-center hover:bg-accent-nova transition-all duration-300 hover:scale-110"
-                >
-                  <Facebook className="w-5 h-5" />
                 </a>
               </div>
             </div>

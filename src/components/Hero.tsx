@@ -39,13 +39,13 @@ const Hero = () => {
             </div>
             
             <h1 className="font-heading font-bold text-5xl md:text-7xl text-white mb-6 leading-tight">
-              Websites die 
-              <span className="block text-accent-nova">begeistern</span>
+              Websites erstellen
+              <span className="block text-accent-nova">& hosten</span>
             </h1>
             
             <p className="text-xl md:text-2xl text-white/90 mb-8 max-w-3xl mx-auto leading-relaxed">
-              Nova WebDesign entwickelt maßgeschneiderte Websites für lokale Unternehmen 
-              in Wiesbaden. Modern, responsiv und erfolgsorientiert.
+              Professionelle Website-Erstellung mit zuverlässigem Hosting für lokale Unternehmen 
+              in Wiesbaden. Alles aus einer Hand - von der Idee bis zum Live-Gang.
             </p>
           </div>
 

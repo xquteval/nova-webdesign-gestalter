@@ -19,7 +19,7 @@ const Header = () => {
     { name: "Leistungen", href: "#services" },
     { name: "Tools", href: "#tools" },
     { name: "Projekte", href: "#showcase" },
-    { name: "Referenzen", href: "#testimonials" },
+    
     { name: "Kontakt", href: "#contact" },
   ];
 
@@ -34,10 +34,8 @@ const Header = () => {
       <div className="container mx-auto px-6 py-4">
         <div className="flex items-center justify-between">
           {/* Logo */}
-          <div className="flex items-center space-x-2">
-            <div className="w-10 h-10 rounded-lg gradient-nova flex items-center justify-center">
-              <span className="text-white font-bold text-xl">N</span>
-            </div>
+          <div className="flex items-center space-x-3">
+            <img src="/src/assets/nova-logo.png" alt="Nova WebDesign Logo" className="w-10 h-10 rounded-lg" />
             <div>
               <h1 className="font-heading font-bold text-xl text-foreground">
                 Nova WebDesign
