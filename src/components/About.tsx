@@ -1,7 +1,5 @@
 import { useEffect, useRef, useState } from "react";
 import { Award, Users, Clock, Target } from "lucide-react";
-import StarField from "./StarField";
-import FloatingElements from "./FloatingElements";
 
 const About = () => {
   const [isVisible, setIsVisible] = useState(false);
@@ -37,12 +35,6 @@ const About = () => {
       id="about"
       className="py-20 bg-gradient-subtle relative overflow-hidden"
     >
-      {/* Animated Star Field Background */}
-      <StarField />
-      <FloatingElements />
-      
-      {/* Overlay for content readability */}
-      <div className="absolute inset-0 bg-black/20 z-10"></div>
       
       {/* Background Elements */}
       <div className="absolute top-0 right-0 w-1/3 h-full bg-accent-nova/5 rounded-l-full"></div>
