@@ -2,8 +2,6 @@ import { useEffect, useRef, useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import GlowingCard from "./GlowingCard";
-import StarField from "./StarField";
-import FloatingElements from "./FloatingElements";
 import { 
   Sparkles, 
   Zap, 
@@ -80,20 +78,13 @@ const UniqueFeature = () => {
       ref={sectionRef}
       className="py-20 bg-gradient-to-br from-primary/5 via-white to-accent-nova/5 relative overflow-hidden"
     >
-      {/* Animated Star Field Background */}
-      <StarField />
-      <FloatingElements />
-      
-      {/* Overlay for content readability */}
-      <div className="absolute inset-0 bg-black/20 z-10"></div>
-      
       {/* Background Effects */}
       <div className="absolute inset-0">
         <div className="absolute top-20 left-1/4 w-64 h-64 bg-gradient-nova opacity-10 rounded-full blur-3xl animate-pulse"></div>
         <div className="absolute bottom-20 right-1/4 w-48 h-48 bg-accent-nova opacity-10 rounded-full blur-3xl animate-pulse delay-1000"></div>
       </div>
 
-      <div className="container mx-auto px-6 relative z-20">
+      <div className="container mx-auto px-6 relative">
         <div className="max-w-6xl mx-auto">
           <div
             className={`transition-all duration-1000 ${

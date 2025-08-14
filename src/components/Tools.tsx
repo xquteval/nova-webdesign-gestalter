@@ -102,7 +102,7 @@ const Tools = () => {
     <section
       ref={sectionRef}
       id="tools"
-      className="py-20 bg-gradient-subtle relative overflow-hidden z-30"
+      className="py-20 bg-gradient-subtle relative overflow-hidden"
     >
       {/* Background Pattern */}
       <div className="absolute inset-0 opacity-5">
@@ -115,7 +115,7 @@ const Tools = () => {
         </div>
       </div>
 
-      <div className="container mx-auto px-6 relative z-40">
+      <div className="container mx-auto px-6 relative">
         <div className="max-w-6xl mx-auto">
           {/* Header */}
           <div

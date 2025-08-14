@@ -40,7 +40,7 @@ const About = () => {
       <div className="absolute top-0 right-0 w-1/3 h-full bg-accent-nova/5 rounded-l-full"></div>
       <div className="absolute bottom-0 left-0 w-1/4 h-1/2 bg-primary/5 rounded-tr-full"></div>
 
-      <div className="container mx-auto px-6 relative z-20">
+      <div className="container mx-auto px-6 relative">
         <div className="max-w-6xl mx-auto">
           {/* Header */}
           <div
@@ -53,11 +53,11 @@ const About = () => {
             <span className="text-accent-nova font-semibold text-lg mb-4 block">
               Über Nova WebDesign
             </span>
-            <h2 className="font-heading font-bold text-4xl md:text-5xl text-white mb-6">
+            <h2 className="font-heading font-bold text-4xl md:text-5xl text-foreground mb-6">
               Digitale Lösungen aus
-              <span className="text-accent-nova block">Wiesbaden</span>
+              <span className="text-gradient block">Wiesbaden</span>
             </h2>
-            <p className="text-xl text-white/90 max-w-3xl mx-auto">
+            <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
               Wir sind Ihr lokaler Partner für Website-Erstellung und zuverlässiges Hosting. 
               Mit Leidenschaft und Expertise bringen wir Ihr Unternehmen 
               erfolgreich ins Internet - alles aus einer Hand.
@@ -73,7 +73,7 @@ const About = () => {
                   : "opacity-0 -translate-x-8"
               }`}
             >
-              <h3 className="font-heading font-semibold text-2xl text-white mb-6">
+              <h3 className="font-heading font-semibold text-2xl text-foreground mb-6">
                 Warum Nova WebDesign?
               </h3>
               
@@ -83,10 +83,10 @@ const About = () => {
                     <Target className="w-6 h-6 text-white" />
                   </div>
                   <div>
-                    <h4 className="font-semibold text-lg text-white mb-2">
+                    <h4 className="font-semibold text-lg text-foreground mb-2">
                       Maßgeschneiderte Lösungen
                     </h4>
-                    <p className="text-white/80">
+                    <p className="text-muted-foreground">
                       Jede Website wird individuell nach Ihren Bedürfnissen entwickelt 
                       und auf unserem zuverlässigen Hosting-System betrieben.
                     </p>
@@ -98,10 +98,10 @@ const About = () => {
                     <Users className="w-6 h-6 text-white" />
                   </div>
                   <div>
-                    <h4 className="font-semibold text-lg text-white mb-2">
+                    <h4 className="font-semibold text-lg text-foreground mb-2">
                       Hosting inklusive
                     </h4>
-                    <p className="text-white/80">
+                    <p className="text-muted-foreground">
                       Ihre Website läuft auf unserem schnellen und sicheren 
                       Hosting - mit SSL-Zertifikat und regelmäßigen Backups.
                     </p>
@@ -113,10 +113,10 @@ const About = () => {
                     <Award className="w-6 h-6 text-white" />
                   </div>
                   <div>
-                    <h4 className="font-semibold text-lg text-white mb-2">
+                    <h4 className="font-semibold text-lg text-foreground mb-2">
                       Alles aus einer Hand
                     </h4>
-                    <p className="text-white/80">
+                    <p className="text-muted-foreground">
                       Von der Website-Erstellung bis zum Hosting und Support - 
                       Sie haben nur einen Ansprechpartner für alles.
                     </p>
@@ -137,23 +137,23 @@ const About = () => {
                 {stats.map((stat, index) => (
                   <div
                     key={index}
-                    className={`text-center p-6 rounded-2xl bg-white/10 backdrop-blur-sm hover-lift transition-all duration-300 delay-${100 + index * 100}`}
+                    className={`text-center p-6 rounded-2xl bg-white hover-lift transition-all duration-300 delay-${index * 100}`}
                   >
                     <div className="w-16 h-16 rounded-full gradient-nova flex items-center justify-center mx-auto mb-4">
                       <stat.icon className="w-8 h-8 text-white" />
                     </div>
-                    <div className="font-heading font-bold text-3xl text-white mb-2">
+                    <div className="font-heading font-bold text-3xl text-foreground mb-2">
                       {stat.value}
                     </div>
-                    <div className="text-white/80 font-medium">
+                    <div className="text-muted-foreground font-medium">
                       {stat.label}
                     </div>
                   </div>
                 ))}
               </div>
 
-              <div className="mt-8 p-6 rounded-2xl bg-white/10 backdrop-blur-sm border border-white/20">
-                <blockquote className="text-lg text-white italic text-center">
+              <div className="mt-8 p-6 rounded-2xl bg-white/50 backdrop-blur-sm border border-white/20">
+                <blockquote className="text-lg text-foreground italic text-center">
                   "Wir erstellen nicht nur Websites, sondern bieten 
                   das komplette Paket: Design, Entwicklung und 
                   zuverlässiges Hosting - alles aus einer Hand."

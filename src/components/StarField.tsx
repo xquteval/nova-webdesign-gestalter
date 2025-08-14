@@ -20,10 +20,8 @@ const StarField = () => {
     if (!ctx) return;
 
     const resizeCanvas = () => {
-      if (canvas.parentElement) {
-        canvas.width = canvas.parentElement.offsetWidth;
-        canvas.height = canvas.parentElement.offsetHeight;
-      }
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
     };
 
     const initStars = () => {
@@ -104,11 +102,11 @@ const StarField = () => {
   return (
     <canvas
       ref={canvasRef}
-      className="absolute inset-0 pointer-events-none z-0"
+      className="fixed inset-0 pointer-events-none z-0 max-w-full max-h-full"
       style={{ 
         background: 'linear-gradient(135deg, #0f1419 0%, #1a2332 100%)',
-        width: '100%',
-        height: '100%'
+        width: '100vw',
+        height: '100vh'
       }}
     />
   );
