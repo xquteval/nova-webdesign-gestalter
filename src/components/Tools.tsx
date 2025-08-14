@@ -13,11 +13,11 @@ import {
 import DomainChecker from "./DomainChecker";
 import SEOChecker from "./SEOChecker";
 
-type ActiveTool = 'none' | 'domain' | 'seo';
+type ActiveTool = null | 'domain' | 'seo';
 
 const Tools = () => {
   const [isVisible, setIsVisible] = useState(false);
-  const [activeTool, setActiveTool] = useState<ActiveTool>('none');
+  const [activeTool, setActiveTool] = useState<ActiveTool>(null);
   const sectionRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
@@ -64,7 +64,7 @@ const Tools = () => {
             <div className="text-center mb-8">
               <Button
                 variant="outline"
-                onClick={() => setActiveTool('none')}
+                onClick={() => setActiveTool(null)}
                 className="mb-4"
               >
                 ← Zurück zu Tools
@@ -85,7 +85,7 @@ const Tools = () => {
             <div className="text-center mb-8">
               <Button
                 variant="outline"
-                onClick={() => setActiveTool('none')}
+                onClick={() => setActiveTool(null)}
                 className="mb-4"
               >
                 ← Zurück zu Tools

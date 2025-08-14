@@ -32,16 +32,16 @@ const FloatingElements = () => {
   }, []);
 
   return (
-    <div className="fixed inset-0 pointer-events-none z-10 overflow-hidden">
+    <div className="fixed inset-0 pointer-events-none z-10 overflow-hidden max-w-full max-h-full">
       {elements.map((element) => (
         <div
           key={element.id}
           className={`absolute rounded-full ${element.color} blur-sm animate-pulse`}
           style={{
-            left: `${element.x}%`,
-            top: `${element.y}%`,
-            width: `${element.size}px`,
-            height: `${element.size}px`,
+            left: `${Math.min(element.x, 90)}%`,
+            top: `${Math.min(element.y, 90)}%`,
+            width: `${Math.min(element.size, 20)}px`,
+            height: `${Math.min(element.size, 20)}px`,
             animation: `float-${element.id} ${element.duration}s ease-in-out infinite`,
             animationDelay: `${element.delay}s`
           }}
