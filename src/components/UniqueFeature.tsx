@@ -141,12 +141,11 @@ const UniqueFeature = () => {
                   ))}
                 </div>
 
-                <div className="relative">
-                  <div className="absolute -inset-1 bg-gradient-to-r from-primary via-accent-nova to-primary rounded-lg blur opacity-30 animate-pulse"></div>
+                <div className="flex justify-center">
                   <Button 
                     size="lg" 
                     variant="nova"
-                    className="relative bg-gradient-to-r from-primary to-accent-nova hover:from-accent-nova hover:to-primary transition-all duration-300 transform hover:scale-110 shadow-xl"
+                    className="bg-gradient-to-r from-primary to-accent-nova hover:from-accent-nova hover:to-primary transition-all duration-300 transform hover:scale-105 shadow-xl border-0"
                     onClick={() => {
                       const contactSection = document.getElementById('contact');
                       contactSection?.scrollIntoView({ behavior: 'smooth' });
