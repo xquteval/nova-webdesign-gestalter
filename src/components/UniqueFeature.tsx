@@ -84,9 +84,6 @@ const UniqueFeature = () => {
       <StarField />
       <FloatingElements />
       
-      {/* Overlay for content readability */}
-      <div className="absolute inset-0 bg-black/20 z-10"></div>
-      
       {/* Background Effects */}
       <div className="absolute inset-0">
         <div className="absolute top-20 left-1/4 w-64 h-64 bg-gradient-nova opacity-10 rounded-full blur-3xl animate-pulse"></div>
