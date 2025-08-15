@@ -264,7 +264,7 @@ const Contact = () => {
                 {/* Map Placeholder */}
                 <Card className="hover-lift">
                   <CardContent className="p-0">
-                    <div className="h-48 bg-gradient-nova relative rounded-lg overflow-hidden">
+                    <div className="h-48 gradient-nova relative rounded-lg overflow-hidden">
                       <div className="absolute inset-0 flex items-center justify-center">
                         <div className="text-center text-white">
                           <MapPin className="w-12 h-12 mx-auto mb-2" />
