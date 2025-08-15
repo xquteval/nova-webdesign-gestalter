@@ -41,8 +41,7 @@ const StarField = () => {
     const animateStars = () => {
       if (!ctx || !canvas) return;
 
-      ctx.fillStyle = 'rgba(0, 0, 0, 0.1)';
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
 
       const centerX = canvas.width / 2;
       const centerY = canvas.height / 2;
@@ -106,7 +105,6 @@ const StarField = () => {
       ref={canvasRef}
       className="absolute inset-0 pointer-events-none z-0"
       style={{ 
-        background: 'linear-gradient(135deg, #0f1419 0%, #1a2332 100%)',
         width: '100%',
         height: '100%'
       }}
