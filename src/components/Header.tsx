@@ -35,7 +35,7 @@ const Header = () => {
         <div className="flex items-center justify-between">
           {/* Logo */}
           <div className="flex items-center space-x-3">
-            <img src="/src/assets/nova-logo.png" alt="Nova WebDesign Logo" className="w-10 h-10 rounded-lg" />
+            <img src="/src/assets/nova-logo-new.svg" alt="Nova WebDesign Logo" className="w-10 h-10" />
             <div>
               <h1 className="font-heading font-bold text-xl text-foreground">
                 Nova WebDesign
