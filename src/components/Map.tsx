@@ -1,107 +1,20 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { MapPin, Edit3 } from 'lucide-react';
-
-declare global {
-  interface Window {
-    google: typeof google;
-  }
-}
 
 interface MapProps {
   address?: string;
 }
 
-const Map: React.FC<MapProps> = ({ 
-  address = "Wiesbaden, Deutschland" 
-}) => {
-  const mapRef = useRef<HTMLDivElement>(null);
+const Map: React.FC<MapProps> = ({ address = 'Wiesbaden, Deutschland' }) => {
   const [isEditing, setIsEditing] = useState(false);
   const [currentAddress, setCurrentAddress] = useState(address);
   const [editAddress, setEditAddress] = useState(address);
-  const [map, setMap] = useState<google.maps.Map | null>(null);
 
-  const initializeMap = async (searchAddress: string) => {
-    if (!mapRef.current) return;
-
-    // Create map
-    const googleMap = new google.maps.Map(mapRef.current, {
-      zoom: 13,
-      center: { lat: 50.0826, lng: 8.2417 }, // Default Wiesbaden coordinates
-      styles: [
-        {
-          featureType: "all",
-          elementType: "geometry",
-          stylers: [{ color: "#f5f5f5" }]
-        },
-        {
-          featureType: "water",
-          elementType: "geometry",
-          stylers: [{ color: "#c9e2f5" }]
-        },
-        {
-          featureType: "road",
-          elementType: "geometry",
-          stylers: [{ color: "#ffffff" }]
-        }
-      ]
-    });
-
-    setMap(googleMap);
-
-    // Geocode and add marker
-    const geocoder = new google.maps.Geocoder();
-    
-    geocoder.geocode({ address: searchAddress }, (results, status) => {
-      if (status === 'OK' && results && results[0]) {
-        const location = results[0].geometry.location;
-        
-        googleMap.setCenter(location);
-        
-        // Add custom marker
-        new google.maps.Marker({
-          position: location,
-          map: googleMap,
-          title: searchAddress,
-          icon: {
-            path: google.maps.SymbolPath.CIRCLE,
-            fillColor: '#3b82f6',
-            fillOpacity: 1,
-            strokeColor: '#ffffff',
-            strokeWeight: 3,
-            scale: 8
-          }
-        });
-      }
-    });
-  };
-
-  useEffect(() => {
-    const loadGoogleMaps = () => {
-      if (window.google) {
-        initializeMap(currentAddress);
-        return;
-      }
-
-      const script = document.createElement('script');
-      script.src = `https://maps.googleapis.com/maps/api/js?key=YOUR_GOOGLE_MAPS_API_KEY&libraries=places`;
-      script.async = true;
-      script.defer = true;
-      script.onload = () => initializeMap(currentAddress);
-      document.head.appendChild(script);
-    };
-
-    loadGoogleMaps();
-  }, [currentAddress]);
-
-  const handleUpdateAddress = () => {
-    setCurrentAddress(editAddress);
-    setIsEditing(false);
-    if (map) {
-      initializeMap(editAddress);
-    }
-  };
+  const embedUrl = `https://www.google.com/maps?q=${encodeURIComponent(
+    currentAddress
+  )}&output=embed`;
 
   return (
     <div className="w-full h-[400px] rounded-2xl overflow-hidden shadow-xl bg-white/80 backdrop-blur-sm border border-white/40 relative">
@@ -127,7 +40,10 @@ const Map: React.FC<MapProps> = ({
             />
             <Button
               size="sm"
-              onClick={handleUpdateAddress}
+              onClick={() => {
+                setCurrentAddress(editAddress);
+                setIsEditing(false);
+              }}
               className="bg-gradient-nova"
             >
               <MapPin className="w-4 h-4" />
@@ -146,21 +62,17 @@ const Map: React.FC<MapProps> = ({
         )}
       </div>
 
-      {/* Map Container */}
-      <div ref={mapRef} className="w-full h-full" />
-      
-      {/* Loading Placeholder */}
-      {!map && (
-        <div className="absolute inset-0 flex items-center justify-center bg-gradient-subtle">
-          <div className="text-center">
-            <MapPin className="w-12 h-12 text-accent-nova mx-auto mb-4 animate-pulse" />
-            <p className="text-muted-foreground">Karte wird geladen...</p>
-            <p className="text-sm text-muted-foreground mt-2">
-              Bitte fügen Sie Ihren Google Maps API-Key hinzu
-            </p>
-          </div>
-        </div>
-      )}
+      {/* Map Iframe (no API key required) */}
+      <iframe
+        title={`Standortkarte ${currentAddress}`}
+        src={embedUrl}
+        loading="lazy"
+        referrerPolicy="no-referrer-when-downgrade"
+        className="w-full h-full border-0"
+      />
+
+      {/* Loading Overlay for better UX (shows briefly on navigation changes) */}
+      <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-transparent to-background/10" />
     </div>
   );
 };
