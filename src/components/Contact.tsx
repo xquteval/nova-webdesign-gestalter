@@ -46,7 +46,7 @@ const Contact = () => {
     {
       icon: MapPin,
       title: "Adresse",
-      content: "Wilhelmstraße 123\n65183 Wiesbaden",
+      content: "Hans-Böckler Str. 100\n65199 Wiesbaden",
       color: "primary"
     },
     {
@@ -263,7 +263,7 @@ const Contact = () => {
                 ))}
 
                 {/* Interactive Map */}
-                <Map address="Wiesbaden, Deutschland" />
+                <Map address="Hans-Böckler Str. 100, 65199 Wiesbaden" />
 
                 {/* Quick Contact */}
                 <Card className="gradient-nova text-white hover-lift">
