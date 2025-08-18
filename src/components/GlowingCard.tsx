@@ -18,7 +18,7 @@ const GlowingCard = ({ children, className = '', glowColor = 'primary' }: Glowin
     <Card 
       className={`
         relative overflow-hidden bg-white/10 backdrop-blur-sm border border-white/20 
-        transition-all duration-500 hover:scale-105 hover:bg-white/20
+        transition-all duration-300 hover:scale-105 hover:bg-white/20 group
         ${glowClasses[glowColor]}
         ${className}
       `}

@@ -131,9 +131,9 @@ const UniqueFeature = () => {
                     <GlowingCard
                       key={index}
                       glowColor={feature.color}
-                      className={`transition-all duration-500 delay-${index * 100} ${
+                      className={`transition-all duration-300 ${
                         isVisible
-                          ? "opacity-100 translate-y-0"
+                          ? `opacity-100 translate-y-0 delay-${index * 100}`
                           : "opacity-0 translate-y-4"
                       }`}
                     >
