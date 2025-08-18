@@ -15,11 +15,7 @@ const Header = () => {
   }, []);
 
   const navItems = [
-    { name: "Über uns", href: "#about" },
     { name: "Leistungen", href: "#services" },
-    { name: "Tools", href: "#tools" },
-    
-    
     { name: "Kontakt", href: "#contact" },
   ];
 
