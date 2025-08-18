@@ -11,6 +11,7 @@ import {
   Send,
   CheckCircle2
 } from "lucide-react";
+import Map from "./Map";
 
 const Contact = () => {
   const [isVisible, setIsVisible] = useState(false);
@@ -261,20 +262,8 @@ const Contact = () => {
                   </Card>
                 ))}
 
-                {/* Map Placeholder */}
-                <Card className="hover-lift">
-                  <CardContent className="p-0">
-                    <div className="h-48 gradient-nova relative rounded-lg overflow-hidden">
-                      <div className="absolute inset-0 flex items-center justify-center">
-                        <div className="text-center text-white">
-                          <MapPin className="w-12 h-12 mx-auto mb-2" />
-                          <p className="font-medium">Wiesbaden Zentrum</p>
-                          <p className="text-sm opacity-80">Wilhelmstraße 123</p>
-                        </div>
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
+                {/* Interactive Map */}
+                <Map address="Wiesbaden, Deutschland" />
 
                 {/* Quick Contact */}
                 <Card className="gradient-nova text-white hover-lift">

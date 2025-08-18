@@ -110,8 +110,19 @@ const UniqueFeature = () => {
                   🚀 Warum Nova WebDesign?
                 </h2>
                 
+                <div className="mb-8 p-6 rounded-2xl bg-white/80 backdrop-blur-sm border border-white/40 shadow-lg max-w-4xl mx-auto">
+                  <blockquote className="text-lg text-foreground italic text-center">
+                    "Wir erstellen nicht nur Websites, sondern bieten 
+                    das komplette Paket: Design, Entwicklung und 
+                    zuverlässiges Hosting - alles aus einer Hand."
+                  </blockquote>
+                  <cite className="block text-center mt-4 text-accent-nova font-semibold">
+                    — Das Nova Team
+                  </cite>
+                </div>
+                
                 <p className="text-xl text-muted-foreground mb-8 max-w-3xl mx-auto">
-                  Wir sind nicht nur ein Webdesign-Unternehmen. Wir sind Ihr digitaler Partner für nachhaltigen Erfolg in Wiesbaden - 
+                  Ihr digitaler Partner für nachhaltigen Erfolg in Wiesbaden - 
                   <span className="text-accent-nova font-semibold"> mit Hosting und allem drum und dran!</span>
                 </p>
 
