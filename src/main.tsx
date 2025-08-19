@@ -7,6 +7,9 @@ import NotFound from "./pages/NotFound.tsx";
 import Impressum from "./pages/Impressum.tsx";
 import Datenschutz from "./pages/Datenschutz.tsx";
 import AGB from "./pages/AGB.tsx";
+import Webdesign from "./pages/Webdesign.tsx";
+import Webentwicklung from "./pages/Webentwicklung.tsx";
+import WebHosting from "./pages/WebHosting.tsx";
 
 const router = createBrowserRouter([
   {
@@ -25,6 +28,18 @@ const router = createBrowserRouter([
   {
     path: "/agb",
     element: <AGB />,
+  },
+  {
+    path: "/webdesign",
+    element: <Webdesign />,
+  },
+  {
+    path: "/webentwicklung", 
+    element: <Webentwicklung />,
+  },
+  {
+    path: "/web-hosting",
+    element: <WebHosting />,
   },
 ]);
 

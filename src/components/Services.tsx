@@ -133,6 +133,14 @@ const Services = () => {
                   <Button 
                     variant="outline" 
                     className="w-full group-hover:bg-primary group-hover:text-white transition-all duration-300"
+                    onClick={() => {
+                      const serviceUrls = {
+                        'Webdesign': '/webdesign',
+                        'Webentwicklung': '/webentwicklung', 
+                        'Web-Hosting': '/web-hosting'
+                      };
+                      window.location.href = serviceUrls[service.title as keyof typeof serviceUrls] || '/';
+                    }}
                   >
                     Mehr erfahren
                     <ArrowRight className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform duration-300" />

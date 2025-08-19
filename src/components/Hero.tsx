@@ -73,11 +73,11 @@ const Hero = () => {
               variant="outline"
               className="border-white/30 text-white hover:bg-white/10 hover:scale-105 transition-all duration-300 font-semibold px-8 py-4 text-lg backdrop-blur-sm"
               onClick={() => {
-                const toolsSection = document.getElementById('tools');
-                toolsSection?.scrollIntoView({ behavior: 'smooth' });
+                const servicesSection = document.getElementById('services');
+                servicesSection?.scrollIntoView({ behavior: 'smooth' });
               }}
             >
-              Tools ansehen
+              Leistungen ansehen
             </Button>
           </div>
 
