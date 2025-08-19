@@ -11,7 +11,6 @@ import {
   HardDrive, 
   Zap,
   ArrowRight,
-  Server
 } from "lucide-react";
 
 const WebHosting = () => {
@@ -48,45 +47,6 @@ const WebHosting = () => {
     }
   ];
 
-  const packages = [
-    {
-      name: "Starter",
-      price: "9,99€",
-      period: "/Monat",
-      features: [
-        "5 GB SSD Speicher",
-        "1 Domain inklusive",
-        "SSL-Zertifikat",
-        "E-Mail Support"
-      ]
-    },
-    {
-      name: "Business",
-      price: "19,99€",
-      period: "/Monat",
-      features: [
-        "25 GB SSD Speicher",
-        "5 Domains inklusive",
-        "SSL-Zertifikat",
-        "Prioritäts-Support",
-        "Erweiterte Backups"
-      ],
-      popular: true
-    },
-    {
-      name: "Enterprise",
-      price: "39,99€",
-      period: "/Monat",
-      features: [
-        "100 GB SSD Speicher",
-        "Unbegrenzte Domains",
-        "SSL-Zertifikat",
-        "24/7 Premium Support",
-        "CDN inklusive",
-        "DDoS-Schutz"
-      ]
-    }
-  ];
 
   return (
     <div className="min-h-screen">
@@ -122,8 +82,7 @@ const WebHosting = () => {
                 size="lg" 
                 className="bg-white text-primary hover:bg-white/90 px-8 py-4 text-lg"
                 onClick={() => {
-                  const contactSection = document.getElementById('contact');
-                  contactSection?.scrollIntoView({ behavior: 'smooth' });
+                  window.location.href = '/#contact';
                 }}
               >
                 Hosting-Beratung anfragen
@@ -189,74 +148,6 @@ const WebHosting = () => {
         </div>
       </section>
 
-      {/* Pricing Section */}
-      <section className="py-20 bg-gradient-subtle">
-        <div className="container mx-auto px-6">
-          <div className="max-w-6xl mx-auto">
-            <div className="text-center mb-16">
-              <h2 className="font-heading font-bold text-4xl md:text-5xl text-foreground mb-6">
-                Hosting-Pakete
-              </h2>
-              <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-                Wählen Sie das passende Hosting-Paket für Ihre Bedürfnisse. 
-                Alle Pakete enthalten SSL-Zertifikat und Support.
-              </p>
-            </div>
-
-            <div className="grid md:grid-cols-3 gap-8">
-              {packages.map((pkg, index) => (
-                <Card 
-                  key={index} 
-                  className={`relative hover-lift ${pkg.popular ? 'ring-2 ring-accent-nova' : ''}`}
-                >
-                  {pkg.popular && (
-                    <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
-                      <span className="bg-accent-nova text-white px-4 py-1 rounded-full text-sm font-medium">
-                        Beliebt
-                      </span>
-                    </div>
-                  )}
-                  <CardContent className="p-8 text-center">
-                    <div className="w-16 h-16 rounded-2xl bg-primary flex items-center justify-center mx-auto mb-6">
-                      <Server className="w-8 h-8 text-white" />
-                    </div>
-                    
-                    <h3 className="font-heading font-semibold text-2xl text-foreground mb-4">
-                      {pkg.name}
-                    </h3>
-                    
-                    <div className="mb-6">
-                      <span className="text-4xl font-bold text-foreground">{pkg.price}</span>
-                      <span className="text-muted-foreground">{pkg.period}</span>
-                    </div>
-                    
-                    <ul className="space-y-3 mb-8">
-                      {pkg.features.map((feature, idx) => (
-                        <li key={idx} className="flex items-center justify-center text-sm text-muted-foreground">
-                          <CheckCircle className="w-4 h-4 text-accent-nova mr-2 flex-shrink-0" />
-                          {feature}
-                        </li>
-                      ))}
-                    </ul>
-                    
-                    <Button 
-                      variant={pkg.popular ? "nova" : "outline"}
-                      className="w-full"
-                      onClick={() => {
-                        const contactSection = document.getElementById('contact');
-                        contactSection?.scrollIntoView({ behavior: 'smooth' });
-                      }}
-                    >
-                      Paket wählen
-                      <ArrowRight className="ml-2 w-4 h-4" />
-                    </Button>
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
-          </div>
-        </div>
-      </section>
 
       {/* CTA Section */}
       <section className="py-20 bg-white">
@@ -273,8 +164,7 @@ const WebHosting = () => {
               size="lg" 
               variant="nova"
               onClick={() => {
-                const contactSection = document.getElementById('contact');
-                contactSection?.scrollIntoView({ behavior: 'smooth' });
+                window.location.href = '/#contact';
               }}
             >
               Kostenloses Hosting-Gespräch
@@ -284,9 +174,7 @@ const WebHosting = () => {
         </div>
       </section>
 
-      <div id="contact">
-        <Footer />
-      </div>
+      <Footer />
     </div>
   );
 };

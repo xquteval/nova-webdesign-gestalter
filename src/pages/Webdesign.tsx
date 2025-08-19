@@ -81,8 +81,7 @@ const Webdesign = () => {
                 size="lg" 
                 className="bg-white text-primary hover:bg-white/90 px-8 py-4 text-lg"
                 onClick={() => {
-                  const contactSection = document.getElementById('contact');
-                  contactSection?.scrollIntoView({ behavior: 'smooth' });
+                  window.location.href = '/#contact';
                 }}
               >
                 Jetzt Beratung anfragen
@@ -163,8 +162,7 @@ const Webdesign = () => {
               size="lg" 
               variant="nova"
               onClick={() => {
-                const contactSection = document.getElementById('contact');
-                contactSection?.scrollIntoView({ behavior: 'smooth' });
+                window.location.href = '/#contact';
               }}
             >
               Kostenloses Erstgespräch vereinbaren
@@ -174,9 +172,7 @@ const Webdesign = () => {
         </div>
       </section>
 
-      <div id="contact">
-        <Footer />
-      </div>
+      <Footer />
     </div>
   );
 };

@@ -80,10 +80,9 @@ const Webentwicklung = () => {
               <Button 
                 size="lg" 
                 className="bg-white text-primary hover:bg-white/90 px-8 py-4 text-lg"
-                onClick={() => {
-                  const contactSection = document.getElementById('contact');
-                  contactSection?.scrollIntoView({ behavior: 'smooth' });
-                }}
+              onClick={() => {
+                window.location.href = '/#contact';
+              }}
               >
                 Technische Beratung anfragen
                 <ArrowRight className="ml-2 w-5 h-5" />
@@ -186,8 +185,7 @@ const Webentwicklung = () => {
               size="lg" 
               variant="nova"
               onClick={() => {
-                const contactSection = document.getElementById('contact');
-                contactSection?.scrollIntoView({ behavior: 'smooth' });
+                window.location.href = '/#contact';
               }}
             >
               Technisches Gespräch vereinbaren
@@ -197,9 +195,7 @@ const Webentwicklung = () => {
         </div>
       </section>
 
-      <div id="contact">
-        <Footer />
-      </div>
+      <Footer />
     </div>
   );
 };
